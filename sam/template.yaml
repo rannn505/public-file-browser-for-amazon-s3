@@ -50,9 +50,6 @@ Resources:
         - public-file-browser-website-${Unique}
         - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
       AccessControl: Private
-      LoggingConfiguration:
-        DestinationBucketName: !Ref LoggingBucket
-        LogFilePrefix: s3-website/
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -82,9 +79,6 @@ Resources:
         - public-file-browser-files-${Unique}
         - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
       AccessControl: Private
-      LoggingConfiguration:
-        DestinationBucketName: !Ref LoggingBucket
-        LogFilePrefix: s3-files/
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -204,97 +198,6 @@ Resources:
             Condition:
               Bool:
                 aws:SecureTransport: 'false'
-  LoggingBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Retain
-    Metadata:
-      cfn_nag:
-        rules_to_suppress:
-          - id: W35
-            reason: Unnecessary to log access to the logging bucket.
-      cdk_nag:
-        rules_to_suppress:
-          - id: AwsSolutions-S10
-            reason: aws:SecureTransport policy is properly implemented in the Bucket Policy
-      checkov:
-        skip:
-          - id: CKV_AWS_18
-            comment: Unnecessary to log access to the logging bucket.
-    Properties:
-      BucketName: !Sub
-        - public-file-browser-logging-${Unique}
-        - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-      AccessControl: Private
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
-      OwnershipControls:
-        Rules:
-          - ObjectOwnership: BucketOwnerPreferred
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-          - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
-      VersioningConfiguration:
-        Status: Enabled
-      LifecycleConfiguration:
-        Rules:
-          - Id: DeleteOldVersionAfter90Days
-            Status: Enabled
-            NoncurrentVersionExpiration:
-              NoncurrentDays: 90
-  LoggingBucketBucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Metadata:
-      cdk_nag:
-        rules_to_suppress:
-          - id: AwsSolutions-S10
-            reason: aws:SecureTransport policy is properly implemented in the Bucket Policy
-    DependsOn: LoggingBucket
-    Properties:
-      Bucket: !Sub
-        - public-file-browser-logging-${Unique}
-        - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-      PolicyDocument:
-        Version: '2012-10-17'
-        Id: WebAccess
-        Statement:
-          - Sid: S3ServerAccessLogsPolicy
-            Effect: Allow
-            Principal:
-              Service: logging.s3.amazonaws.com
-            Action:
-              - s3:PutObject
-            Resource: !Sub
-              - arn:${AWS::Partition}:s3:::public-file-browser-logging-${Unique}/*
-              - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-            Condition:
-              ArnEquals:
-                aws:SourceArn:
-                  - !Sub
-                    - arn:${AWS::Partition}:s3:::public-file-browser-website-${Unique}
-                    - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-                  - !Sub
-                    - arn:${AWS::Partition}:s3:::public-file-browser-files-${Unique}
-                    - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-              StringEquals:
-                aws:SourceAccount: !Ref 'AWS::AccountId'
-          - Sid: DenyPlaintextAccess
-            Principal: '*'
-            Effect: Deny
-            Action: s3:*
-            Resource:
-              - !Sub
-                - arn:${AWS::Partition}:s3:::public-file-browser-logging-${Unique}
-                - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-              - !Sub
-                - arn:${AWS::Partition}:s3:::public-file-browser-logging-${Unique}/*
-                - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
-            Condition:
-              Bool:
-                aws:SecureTransport: 'false'
   CloudFront:
     Type: AWS::CloudFront::Distribution
     DependsOn:
@@ -329,10 +232,6 @@ Resources:
         #    Locations:
         #      - US
         #    RestrictionType: whitelist
-        Logging:
-          Bucket: !GetAtt LoggingBucket.DomainName
-          Prefix: cloudfront
-          IncludeCookies: true
         DefaultCacheBehavior:
           ForwardedValues:
             QueryString: true

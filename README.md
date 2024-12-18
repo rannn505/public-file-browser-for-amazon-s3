@@ -30,7 +30,7 @@ For this walkthrough, you need to have the following prerequisites:
 - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html) installed and set up with [credentials](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-set-up-credentials.html)
 - Python 3.11 Installed and in your PATH variable
 - Choose a region where the required services below are supported. Most AWS commercial regions are supported, but consult the [AWS Services by Region](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/) page for details.
-  - Amazon CloudFront (including [Standard Log support](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html#access-logs-choosing-s3-bucket))
+  - Amazon CloudFront
   - Amazon S3
   - Amazon Cognito
   - AWS CloudFormation
@@ -81,7 +81,7 @@ For this walkthrough, you need to have the following prerequisites:
    1. `FileBrowserURL` - This URL is for the public web interface. Needed in Step 6.
    2. `PublicFilesBucket` - The name of the S3 bucket for storing PUBLICLY ACCESSIBLE files that display in the user browser.
    3. `WebInterfaceAppBucket` - The name of the S3 bucket that stores the code that runs the file browser web interface.
-6. IMPORTANT: Complete Steps 3 and 4 again, keeping all values the same except for the `CrossOriginRestrictio`n parameter, and input the value from the `FileBrowserURL` output in Step 5. For example:\
+6. IMPORTANT: Complete Steps 3 and 4 again, keeping all values the same except for the `CrossOriginRestriction` parameter, and input the value from the `FileBrowserURL` output in Step 5. For example:\
    `Parameter CrossOriginRestriction [*]: https://d111111abcdef8.cloudfront.net`
 
 This concludes the deployment of the Public File Browser for Amazon S3 web application. AWS SAM CLI uses [AWS CloudFormation](https://aws.amazon.com/cloudformation/) to orchestrate the deployment of the front-end static website and public file storage bucket. The entire application is deployed.
@@ -102,7 +102,7 @@ retrieval by end users. Reference below and consult the [S3](https://aws.amazon.
 
 - Static Costs
   - A few cents monthly to store the website source code in S3 Standard
-  - S3 data storage costs for the public files and logging buckets
+  - S3 data storage costs for the public files bucket
     - Free Tier: 5GB Per Month for First 12 Months
 - Costs for End User Access
   - CloudFront data transfer
@@ -157,10 +157,6 @@ If you choose to update the files in the `./website/` directory of the source co
 
 As a best practice, the solution enables the following features:
 
-- [Amazon CloudWatch distribution access logs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html)
-  - Stored in an S3 bucket: `public-file-browser-logging-[...]`
-- [Amazon S3 bucket access logs (static website and uploaded images)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html)
-  - Stored in an S3 bucket: `public-file-browser-logging-[...]`
 - [Amazon S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)
   - This feature is enabled for all S3 buckets, such as the primary `public-file-browser-files-[...]` bucket used to store public files. This means all data written to the S3 bucket is retained as a “previous version”, even if overwritten or deleted. You incur charges for storing previous versions of objects.
   - If you expect to replace or update files with the same name frequently, then you should configure the S3 bucket with a [Lifecycle Configuration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) to expire noncurrent object versions. See [How do I create Amazon S3 lifecycle configuration rules for noncurrent object versions?](https://repost.aws/knowledge-center/s3-lifecycle-rule-non-current-version)
