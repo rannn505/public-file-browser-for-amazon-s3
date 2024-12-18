@@ -16,6 +16,7 @@
 ### Manual:
 - replace "Powered by ..." at website/index.html to useful Configu links
 - replace website/icon/ to Configu icons
+- update index.html to suite Configu style guide
 
 ## Development:
 

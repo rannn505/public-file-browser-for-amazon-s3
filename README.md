@@ -70,9 +70,7 @@ For this walkthrough, you need to have the following prerequisites:
       1. Stack Name - Choose a unique CloudFormation stack name. End users do not see this.
       2. AWS Region - The supported AWS Region you chose in the Prerequisites section.
       3. `SiteName` - Publicly visible title for the site, shown on the top of the page and in the title bar.
-      4. `FilesOpenTabMode` -  How do you want the browser to react when a user selects a file in the following interface values. `In New Tab` is recommended over `In Same Tab`.
-      5. `VisibleStorageClasses` - Comma delimited list of storage classes to show. Recommend keeping this default.
-      6. `CrossOriginRestriction` - Browser security setting, set to `*` for first deployment, then see Step 6.
+      4. `CrossOriginRestriction` - Browser security setting, set to `*` for first deployment, then see Step 6.
    4. Select the default inputs for the remaining items with the last prompt before deployment being:\
       `Deploy this changeset?`
 4. Wait for the deployment to complete. This process takes approximately five minutes with a final prompt stating:\

@@ -37,11 +37,6 @@ def seed_data(event, _):
         config_data = config_data.replace('###REPLACE_ME_SITE_NAME###', event['ResourceProperties']['SiteName'])
         config_data = config_data.replace('###REPLACE_ME_IDENTITY_POOL_ID###', event['ResourceProperties']['IdentityPoolId'])
         config_data = config_data.replace('###REPLACE_ME_BUCKET_NAME###', event['ResourceProperties']['FilesBucketName'])
-        if event['ResourceProperties']['FilesOpenMode'] == 'In New Tab':
-            config_data = config_data.replace('###REPLACE_ME_FILES_OPEN_MODE###', 'true')
-        elif event['ResourceProperties']['FilesOpenMode'] == 'In Same Tab':
-            config_data = config_data.replace('###REPLACE_ME_FILES_OPEN_MODE###', 'false')
-        config_data = config_data.replace('###REPLACE_ME_VISIBLE_STORAGE_CLASSES###', event['ResourceProperties']['VisibleStorageClasses'])
         with open(config_path, 'w') as file:
             file.write(config_data)
     # Upload the website data

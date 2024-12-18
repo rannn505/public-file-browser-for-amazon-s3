@@ -10,17 +10,6 @@ Parameters:
     Type: String
     Description: Friendly Site Name displayed in the header and title of the website.
     Default: AnyCompany Public Files
-  FilesOpenTabMode:
-    Type: String
-    Description: How do files open when clicked
-    AllowedValues:
-      - In New Tab
-      - In Same Tab
-    Default: In New Tab
-  VisibleStorageClasses:
-    Type: String
-    Description: Comma-delimited list of storage classes to SHOW in directory listings. See S3 GetObject API Reference for possible values.
-    Default: STANDARD,STANDARD_IA,ONEZONE_IA,REDUCED_REDUNDANCY
   CrossOriginRestriction:
     Type: String
     Description: First deployment set to "*", all subsequent deployments set to value of the FileBrowserURL CloudFormation output
@@ -298,8 +287,6 @@ Resources:
       IdentityPoolId: !Ref 'CognitoIdentityPool'
       PublicWebsiteBucket: !Ref PublicWebsiteBucket
       FilesBucketName: !Ref PublicFilesBucket
-      FilesOpenMode: !Ref FilesOpenTabMode
-      VisibleStorageClasses: !Ref VisibleStorageClasses
   CognitoIdentityPool:
     Type: AWS::Cognito::IdentityPool
     Metadata:

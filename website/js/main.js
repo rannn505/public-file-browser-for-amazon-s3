@@ -215,8 +215,7 @@ function getRow(item, prefix, isNavToParent = false) {
     let objSizeMouseover = ''
     let objModified = ''
     let objModifiedMouseover = ''
-    let objClass = '';
-    let objTarget = '';
+    let objTarget = ' target="_blank"'; // Always open in new tab
     if (isNavToParent) {
         // It's a parent "folder" link
         objKey = '..'
@@ -237,9 +236,6 @@ function getRow(item, prefix, isNavToParent = false) {
         onClick = ' onclick="return localNav(\'' + btoa(newPrefix) + '\');"'
     } else {
         // It's an object
-        objClass = item['StorageClass']
-        // Skip invisible object classes
-        if (awsConfigOptions.visible_storage_classes.indexOf(objClass) === -1) { return '' }
         objKey = item['Key']
         objIcon = getBootstrapImageIcon(objKey)
         objSize = s3FileSize(item['Size'], 1)
@@ -248,9 +244,6 @@ function getRow(item, prefix, isNavToParent = false) {
         objModified = dt.toFormat('yyyy-LL-dd HH:mm:ss')
         objModifiedMouseover = dt.toRelative()
         objLink = '/' + encodeURI(objKey)
-        if (awsConfigOptions.files_open_in_new_tab) {
-            objTarget = ' target="_blank"'
-        }
     }
     if (!isNavToParent && objKey.substring(0, prefix.length) == prefix) {
         objKey = objKey.substring(prefix.length)
@@ -261,7 +254,6 @@ function getRow(item, prefix, isNavToParent = false) {
         '                <td class="row_key"><a href="' + objLink + '"' + onClick + objTarget + '>' + escapeHtml(objKey) + '</a></td>\n' +
         '                <td class="row_size"><span title="' + objSizeMouseover + '">' + objSize + '</span></td>\n' +
         '                <td class="row_modified"><span title="' + objModifiedMouseover + '">' + objModified + '</span></td>\n' +
-        '                <td class="row_class">' + objClass + '</td>\n' +
         '            </tr>';
     return newRow
 }
@@ -277,7 +269,6 @@ function getBootstrapImageIcon(key) {
 }
 
 $( document ).ready(function() {
-	awsConfigOptions.visible_storage_classes = awsConfigOptions.visible_storage_classes.toUpperCase().split(',');
     processUrl();
 });
 
