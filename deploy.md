@@ -8,8 +8,8 @@
 - main.js
 - app.py
 #### Prompt:
-- remove the Logging feature entirely, s3 bucket access logs, cloudfront access logs, and all access logs definition, and any related reference like the actual logging bucket itself - i dont need this feature at all
-- remove the Versioning feature entirely - s3 bucket versioning definition for all buckets, and any related reference like the GetObjectVersion permissions on the bucket policies - i dont need this feature at all
+- remove the logging feature entirely, s3 bucket access logs, cloudfront access logs, and all access logs definition, and any related reference like the actual logging bucket itself - i dont need this feature at all
+- remove the versioning feature entirely - s3 bucket versioning definition for all buckets, and any related reference like the `s3:GetObjectVersion` permissions on the bucket policies - i dont need this feature at all
 - remove all VisibleStorageClasses and StorageClass, row_class references including in the table view itself, start with the cloud formation template, then the website html and js, then the seed app.py
 - remove all FilesOpenTabMode references then change relevant code accordingly. treat the rest of the code as it was "In New Tab".
 

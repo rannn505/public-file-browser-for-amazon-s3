@@ -90,8 +90,6 @@ This concludes the deployment of the Public File Browser for Amazon S3 web appli
 
 To add files to the public interface simply move files into the S3 Bucket indicated in the `PublicFilesBucket` output from the above SAM Deploy command. The bucket name should start with `public-file-browser-files-` followed by a random string.
 
-Note that this solution has [Amazon S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) enabled for all data, which could result in deleted data being retained and incurring costs. See the Security section below for details.
-
 ## Frequently Asked Questions
 
 ### How much does this solution cost to operate?
@@ -157,9 +155,6 @@ If you choose to update the files in the `./website/` directory of the source co
 
 As a best practice, the solution enables the following features:
 
-- [Amazon S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html)
-  - This feature is enabled for all S3 buckets, such as the primary `public-file-browser-files-[...]` bucket used to store public files. This means all data written to the S3 bucket is retained as a “previous version”, even if overwritten or deleted. You incur charges for storing previous versions of objects.
-  - If you expect to replace or update files with the same name frequently, then you should configure the S3 bucket with a [Lifecycle Configuration](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) to expire noncurrent object versions. See [How do I create Amazon S3 lifecycle configuration rules for noncurrent object versions?](https://repost.aws/knowledge-center/s3-lifecycle-rule-non-current-version)
 - [Default Encryption-at-Rest for all objects stored in Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/default-encryption-faq.html)
 - [Default TLS Version Options (TLSv1)](https://repost.aws/knowledge-center/cloudfront-security-protocols-ciphers)
   - To simplify deployment, this solution uses the default CloudFront domain and certificate that limits the available TLS version options to TLSv1. To use another [supported TLS version](https://repost.aws/knowledge-center/cloudfront-security-protocols-ciphers) follow the instructions above to use a custom domain, [new certificate](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html), and configure the [Security Policy](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/secure-connections-supported-viewer-protocols-ciphers.html) on the CloudFront distribution.

@@ -59,14 +59,6 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-      VersioningConfiguration:
-        Status: Enabled
-      LifecycleConfiguration:
-        Rules:
-          - Id: DeleteOldVersionAfter90Days
-            Status: Enabled
-            NoncurrentVersionExpiration:
-              NoncurrentDays: 90
   PublicFilesBucket:
     Type: AWS::S3::Bucket
     Metadata:
@@ -88,14 +80,6 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-      VersioningConfiguration:
-        Status: Enabled
-      LifecycleConfiguration:
-        Rules:
-          - Id: DeleteOldVersionAfter90Days
-            Status: Enabled
-            NoncurrentVersionExpiration:
-              NoncurrentDays: 90
       CorsConfiguration:
         CorsRules:
           - AllowedHeaders:
@@ -134,7 +118,6 @@ Resources:
             Effect: Allow
             Action:
               - s3:GetObject
-              - s3:GetObjectVersion
             Resource: !Sub
               - arn:${AWS::Partition}:s3:::public-file-browser-website-${Unique}/*
               - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
@@ -177,7 +160,6 @@ Resources:
             Effect: Allow
             Action:
               - s3:GetObject
-              - s3:GetObjectVersion
             Resource: !Sub
               - arn:${AWS::Partition}:s3:::public-file-browser-files-${Unique}/*
               - Unique: !Select [ 4, !Split [ '-', !Select [ 2, !Split [ '/', !Ref 'AWS::StackId' ] ] ] ]
