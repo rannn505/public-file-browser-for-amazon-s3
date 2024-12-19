@@ -6,10 +6,6 @@ Description: >
   Public File Browser for Amazon S3
   **WARNING** This template creates resources which incur charges. You will be billed for the AWS resources used if you create a stack from this template.
 Parameters:
-  SiteName:
-    Type: String
-    Description: Friendly Site Name displayed in the header and title of the website.
-    Default: AnyCompany Public Files
   CrossOriginRestriction:
     Type: String
     Description: First deployment set to "*", all subsequent deployments set to value of the FileBrowserURL CloudFormation output
@@ -48,6 +44,19 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - HEAD
+              - GET
+            AllowedOrigins:
+              - !Ref CrossOriginRestriction
+            ExposedHeaders:
+              - ETag
+            Id: CORSRule
+            MaxAge: 3600
   PublicFilesBucket:
     Type: AWS::S3::Bucket
     Metadata:
@@ -77,9 +86,6 @@ Resources:
               - HEAD
               - GET
             AllowedOrigins:
-              # This is an unfortunate reality of circular dependencies, we get around this
-              # by leaving the CORS configuration open until the user re-runs the deployment
-              # with an updated phase.
               - !Ref CrossOriginRestriction
             ExposedHeaders:
               - ETag
@@ -283,7 +289,6 @@ Resources:
     Type: Custom::SeedS3Data
     Properties:
       ServiceToken: !GetAtt 'CustomSeedS3Data.Arn'
-      SiteName: !Ref 'SiteName'
       IdentityPoolId: !Ref 'CognitoIdentityPool'
       PublicWebsiteBucket: !Ref PublicWebsiteBucket
       FilesBucketName: !Ref PublicFilesBucket

@@ -29,16 +29,15 @@ def seed_data(event, _):
         zip_ref.extractall('/tmp/website/')                      # nosec hardcoded_tmp_directory
     path = '/tmp/website/website'                                # nosec hardcoded_tmp_directory
     # Replace placeholder config values with Lambda inputs
-    for file_name in ['index.html', 'icon/site.webmanifest']:
-        config_path = os.path.join(path, file_name)
-        logger.debug(f"Modifying Website Config {config_path}...")
-        with open(config_path, 'r') as file:
-            config_data = file.read()
-        config_data = config_data.replace('###REPLACE_ME_SITE_NAME###', event['ResourceProperties']['SiteName'])
-        config_data = config_data.replace('###REPLACE_ME_IDENTITY_POOL_ID###', event['ResourceProperties']['IdentityPoolId'])
-        config_data = config_data.replace('###REPLACE_ME_BUCKET_NAME###', event['ResourceProperties']['FilesBucketName'])
-        with open(config_path, 'w') as file:
-            file.write(config_data)
+    file_name = 'index.html'
+    config_path = os.path.join(path, file_name)
+    logger.debug(f"Modifying Website Config {config_path}...")
+    with open(config_path, 'r') as file:
+        config_data = file.read()
+    config_data = config_data.replace('###REPLACE_ME_IDENTITY_POOL_ID###', event['ResourceProperties']['IdentityPoolId'])
+    config_data = config_data.replace('###REPLACE_ME_BUCKET_NAME###', event['ResourceProperties']['FilesBucketName'])
+    with open(config_path, 'w') as file:
+        file.write(config_data)
     # Upload the website data
     logger.debug(f"Uploading Website Data...")
     for subdir, dirs, files in os.walk(path):

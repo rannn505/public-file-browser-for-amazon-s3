@@ -69,8 +69,7 @@ For this walkthrough, you need to have the following prerequisites:
    3. Enter values for the deployment parameters
       1. Stack Name - Choose a unique CloudFormation stack name. End users do not see this.
       2. AWS Region - The supported AWS Region you chose in the Prerequisites section.
-      3. `SiteName` - Publicly visible title for the site, shown on the top of the page and in the title bar.
-      4. `CrossOriginRestriction` - Browser security setting, set to `*` for first deployment, then see Step 6.
+      3. `CrossOriginRestriction` - Browser security setting, set to `*` for first deployment, then see Step 6.
    4. Select the default inputs for the remaining items with the last prompt before deployment being:\
       `Deploy this changeset?`
 4. Wait for the deployment to complete. This process takes approximately five minutes with a final prompt stating:\
