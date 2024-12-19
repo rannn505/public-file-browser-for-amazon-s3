@@ -165,7 +165,7 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 Run the following from the website directory using [local-web-server](https://www.npmjs.com/package/local-web-server):
 
 ```bash
-> ws -r '/ -> index.html' '/pfb_for_s3/(.*) -> /$1' --log.format dev
+> ws -r '/ -> index.html' '/(.*) -> /$1' --log.format dev
 ```
 
 ### Automatic Deployment Note

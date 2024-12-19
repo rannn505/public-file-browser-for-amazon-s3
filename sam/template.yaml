@@ -211,14 +211,14 @@ Resources:
           Compress: true
           # Magic number: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policies-list
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
-        DefaultRootObject: pfb_for_s3/index.html
+        DefaultRootObject: /index.html
         CacheBehaviors:
           - ForwardedValues:
               QueryString: true
             TargetOriginId: !Sub 'S3-Public-Website'
             ViewerProtocolPolicy: redirect-to-https
             Compress: true
-            PathPattern: pfb_for_s3/*
+            PathPattern: /*
             # Magic number: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policies-list
             CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
         Enabled: true

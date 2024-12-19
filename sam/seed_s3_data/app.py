@@ -47,10 +47,10 @@ def seed_data(event, _):
             with open(full_path, 'rb') as data:
                 object_key = full_path[len(path) + 1:]
                 logger.debug(
-                    f"Uploading: {full_path} -> s3://{event['ResourceProperties']['PublicWebsiteBucket']}/pfb_for_s3/{object_key}")
+                    f"Uploading: {full_path} -> s3://{event['ResourceProperties']['PublicWebsiteBucket']}/{object_key}")
                 s3.put_object(
                     Bucket=event['ResourceProperties']['PublicWebsiteBucket'],
-                    Key='pfb_for_s3/' + object_key,
+                    Key=object_key,
                     Body=data,
                     ContentType=mimetypes.guess_type(full_path)[0] or 'application/octet-stream'
                 )
