@@ -106,7 +106,7 @@ function generate_title_breadcrumbs(prefix) {
     let prefix_split = prefix.split('/')
     let objLink = '/'
     let onClick = ' onclick="return localNav(\'\');"'
-    let title_text = '<a class="link-dark" href="' + objLink + '"' + onClick + '>Home</a> / '
+    let title_text = '<a class="link-dark" href="' + objLink + '"' + onClick + '>Configu Files</a> / '
     let prior_paths = ''
     for (const item of prefix_split) {
         prior_paths += item + '/'
