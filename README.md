@@ -81,7 +81,7 @@ For this walkthrough, you need to have the following prerequisites:
    1. `FileBrowserURL` - This URL is for the public web interface. Needed in Step 6.
    2. `PublicFilesBucket` - The name of the S3 bucket for storing PUBLICLY ACCESSIBLE files that display in the user browser.
    3. `WebInterfaceAppBucket` - The name of the S3 bucket that stores the code that runs the file browser web interface.
-6. IMPORTANT: Complete Steps 3 and 4 again, keeping all values the same except for the `CrossOriginRestrictio`n parameter, and input the value from the `FileBrowserURL` output in Step 5. For example:\
+6. IMPORTANT: Complete Steps 3 and 4 again, keeping all values the same except for the `CrossOriginRestriction` parameter, and input the value from the `FileBrowserURL` output in Step 5. For example:\
    `Parameter CrossOriginRestriction [*]: https://d111111abcdef8.cloudfront.net`
 
 This concludes the deployment of the Public File Browser for Amazon S3 web application. AWS SAM CLI uses [AWS CloudFormation](https://aws.amazon.com/cloudformation/) to orchestrate the deployment of the front-end static website and public file storage bucket. The entire application is deployed.
